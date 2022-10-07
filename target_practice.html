@@ -109,7 +109,7 @@
     <br>
 
     <label>Current Speed:</label>
-    <input type="text" readonly = "readonly">
+    <input type="text" readonly = "readonly" id = "currentSpeedBox">
 
     <label>Current Combo:</label>
     <input type="text" readonly = "readonly" id = "comboTextBox">
@@ -121,7 +121,7 @@
         Submit New Speed 
     </button>
 
-    <input type = text>
+    <input type = text id = "newSpeedBox">
 
     
     <br>
@@ -146,14 +146,22 @@
     /*
     Global Variables for the game, the pause flag, the combo count, and 
     */
-    let paused = false;
+    let paused = true;
     let comboCount = 1;
     let comboDisp = document.getElementById("comboTextBox");
     let enemyDoc = document.getElementById("enemyButton");
+    let currentSpeedBox = document.getElementById("currentSpeedBox")
+    let milliSecs = 500;
+
 
     function main()
     {
-        
+        currentSpeedBox.value = milliSecs;
+        //set default wait time to text box
+    
+            setTimeout(reset_game, milliSecs);
+    
+               
     }
 
     
@@ -170,8 +178,14 @@
 
     function register_hit()
     {
+        //continue the game if it was paused
+        if(paused == true)
+            pause_unpause();
+
+        //play the firing sound
         play_fire_sound();
         
+        //increment combo counter and change location
         comboDisp.value++;        
         place_in_random_location();
         
@@ -219,12 +233,17 @@
     */
     function reset_game()
     {
+        if(paused == true)
+            main();
         //reset the combo, set paused to true, and move the target to 
         //the default location 
         comboDisp.value = 0;
-        document.getElementById("enemyButton").style.marginTop = 25+"vh"
-        document.getElementById("enemyButton").style.marginLeft =33+"vw";
+        place_in_random_location();
+        document.getElementById("xCoordBox").value = enemyDoc.style.marginLeft.substring(0,5);
+        document.getElementById("yCoordBox").value = enemyDoc.style.marginTop.substring(0,5);
         paused = true;
+        
+        main();
     }
 
 
