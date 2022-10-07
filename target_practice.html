@@ -12,6 +12,7 @@
         width: 80vw;
         height: 70vh;
         border-radius: 5%;
+        cursor: pointer;
     }
 
     .SetResetButtons{
@@ -27,59 +28,143 @@
         font-size: 30px;
         box-shadow: 0 10px rgb(104, 92, 92);
         cursor: pointer;
-        position: relative;
+ 
     }
     
     .SetResetButtons:active {
         background-color: greenyellow;
         top:10px;
         box-shadow: 0 3px rgb(104, 92, 92);
+        position: relative;
+        
     }
 
-    .SetResetButtons:after
-    {
-
-    }
+    .Target{
+        margin: auto;
+        width: 15px;
+        height: 10px;
+        position: relative;
     
+    }
+
+
+    #enemyButton{
+        border-color: transparent;
+
+        background-color: transparent;
+        margin-top: 50vh;
+        margin-left: 50vw;
+    
+    }
 
 
 </style>
+
+
 <body>
+
 <div style="background-color: tan; height: 100vh; width: 100vw;">
+
     <header>
-        <center><p>DPS Target Practice</p></center>
+        <center><p>Shoot the Bat!!!</p></center>
     </header>
 
-    <div id = "TargetBox" onclick="PlayFireSound()">
-        <div id = "Target" onclick="move_target()">
-            <button>
-                <img src="https://i.redd.it/czvot56c2zt71.png">
+
+
+    <div id = "TargetBox" onclick="play_fire_sound()">
+            <button id = "enemyButton">
+                <img src="dracky.png" alt = "no dracky today :(" style = "width: 5vw;">
             </button>
-        </div>
     </div>
 
-    <button class="SetResetButtons" onclick="pause_unpause()">Reset Game!</button>
-    <button class="SetResetButtons" >Reset Game!</button>
+    <div>
+        <center>
+        <button class="SetResetButtons" onclick="play_fire_sound()">Reset Game!</button>
+        <button class="SetResetButtons" onclick ="pauseGame()">Pause Game (II) </button>
+        <button class="SetResetButtons" onclick = "playKnockingNoise()"> 
+            horror mode lol
+        </button>
+
+        <br>
+        <br>
+        <input type="text" on>
+
+        </center>
     </div>
-  
     
 </div>
-</body>
+
 
 <script>
-    function pause_unpause()
+    
+    /*
+    Global Variables for the game, the pause flag, the combo count, and 
+    */
+    var paused = false;
+    var comboCount = 0;
+    function main()
     {
+        var playArea = document.getElementById("TargetBox")
+        var startX = playArea.offsetWidth/2 + playArea.offsetLeft;
+        var startY = playArea.offsetHeight/2 + playArea.offsetTop;
+        
+        while(true)
+        {
+            playGame(startingPoint);
+        }
+    }
+
+    function playGame(xCoord, yCoord)
+    {
+        while(paused != false)
+        {
+            
+        }
+    }
+    function pause_unpause()
+    {   
+        if(paused == true);
         return;
     }
 
     function move_target()
     {
-
+        return 0;
     }
 
     function play_fire_sound()
     {
-        
+        var shootEffectContainer = new Audio("shootEffect.mp3");
+        shootEffectContainer.play();
     }
+
+    function reset_counter()
+    {
+        comboCount = 0;
+        return;
+    }
+
+    function incrementCounter()
+    {
+        comboCount++;
+        return;
+    }
+
+
+    /*
+    playKnockingNoise - does this as a result of the "horror" button
+        I apologize in advance, I thought it was funny lol.
+    Args:
+        None
+    Return Value:
+        None
+    */
+    function playKnockingNoise()
+    {
+        var knockingNoiseContainer = new Audio("trollKnock.mp3");
+        knockingNoiseContainer.play();
+    }
+
 </script>
+</body>
 </html>
