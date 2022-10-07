@@ -15,7 +15,7 @@
         position: relative;
     }
 
-    .SetResetButtons{
+    .gameButton{
         border: 4px solid black;
         border-radius: 5%;
         background-color: orange;
@@ -31,7 +31,7 @@
  
     }
     
-    .SetResetButtons:active {
+    .gameButton:active {
         background-color: greenyellow;
         top:10px;
         box-shadow: 0 3px rgb(104, 92, 92);
@@ -44,11 +44,20 @@
     #enemyButton{
         border-color: transparent;
         background-color: transparent;
-        margin-top: 30vh;
-        margin-left: 38vw;
+        margin-top: 25vh;
+        margin-left: 33vw;
         cursor: pointer;
     }
 
+    input
+    {
+        border: 4px solid black;
+        border-radius: 5%;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
 
 </style>
 
@@ -58,7 +67,7 @@
 <div style="background-color: tan; height: 100vh; width: 100vw; position: s">
 
     <header>
-        <center><p>Shoot the Bat!!!</p></center>
+        <center><p>Shoot the Bat to Begin!!!</p></center>
     </header>
 
 
@@ -69,19 +78,65 @@
             </button>
     </div>
 
+    <!--Display buttons for the Reset, Pausing, and an additional button-->
     <div>
         <center>
-        <button class="SetResetButtons" onclick="reset_counter()">Reset Game!</button>
-        <button class="SetResetButtons" onclick ="pauseGame()">Pause Game (II) </button>
-        <button class="SetResetButtons" onclick = "playKnockingNoise()"> 
-            horror mode lol
-        </button>
-
-        <br>
-        <br>
-        <input type="text" id = "comboDisplay">
+            <button class="gameButton" onclick="reset_game() ">
+                Reset Game!
+            </button>
+            <button class="gameButton" onclick ="pause_unpause()">
+                Pause Game (II) 
+            </button>
+            <button class="gameButton" onclick = "play_knocking_noise()"> 
+                Do NOT press
+            </button>
         </center>
+        <br>
     </div>
+
+
+
+    <center>
+    <label>
+        Current x position:
+    </label>
+    <input type = "text" readonly = "readonly" id = "xCoordBox"> 
+    
+    <label>
+        Current y position:
+    </label>
+    <input type="text" readonly = "readonly" id = "yCoordBox">
+    <br>
+
+    <label>Current Speed:</label>
+    <input type="text" readonly = "readonly">
+
+    <label>Current Combo:</label>
+    <input type="text" readonly = "readonly" id = "comboTextBox">
+
+
+
+    <br>
+    <button style = "height: 20x; width: 200px;margin-top: 10px;"> 
+        Submit New Speed 
+    </button>
+
+    <input type = text>
+
+    
+    <br>
+
+
+    
+
+    
+</center>
+
+        
+    
+    
+
+
     
 </div>
 
@@ -94,21 +149,14 @@
     let paused = false;
     let comboCount = 1;
     let comboDisp = document.getElementById("comboDisplay");
+    let enemyDoc = document.getElementById("enemyButton");
+
     function main()
     {
-        comboDisp.value = 0;
         
-        while(1==1)
-        {   
-            playGame(startingPoint);
-        }
     }
 
-    function playGame(xCoord, yCoord)
-    {
-
-
-    }
+    
     function pause_unpause()
     {   
         if(paused == true)
@@ -118,10 +166,7 @@
         return;
     }
 
-    function move_target()
-    {
-        return 0;
-    }
+
 
     function register_hit()
     {
@@ -135,9 +180,21 @@
 
     function place_in_random_location()
     {
-        document.getElementById("enemyButton").style.marginTop =  Math.random()*60+"vh";
-        document.getElementById("enemyButton").style.marginLeft = Math.random()*60+"vw";
+        let enemyDoc = document.getElementById("enemyButton");
+        enemyDoc.style.marginTop =  Math.random()*60+"vh";
+        enemyDoc.style.marginLeft = Math.random()*60+"vw";
+
     }
+
+
+    /*
+    play_fire_sound() - plays a firing sound effect when a player hits
+        the target.
+    Args:
+        None
+    Return Value:
+        None
+    */
     function play_fire_sound()
     {
         var shootEffectContainer = new Audio("shootEffect.mp3");
@@ -145,28 +202,34 @@
     }
 
 
-    function reset_counter()
+    /*
+    reset_game() - resets the pause status, combo, and location
+    Args:
+        None
+    Return Value:
+        None
+    */
+    function reset_game()
     {
+        //reset the combo, set paused to true, and move the target to 
+        //the default location 
         comboDisp.value = 0;
-        main();
-        return;
+        document.getElementById("enemyButton").style.marginTop = 25+"vh"
+        document.getElementById("enemyButton").style.marginLeft =33+"vw";
+        paused = true;
     }
 
-    function incrementCounter()
-    {
-        comboCount = comboCount+1;
-    }
 
 
     /*
-    playKnockingNoise - does this as a result of the "horror" button
+    play_knocking_noise() - does this as a result of the "horror" button
         I apologize in advance, I thought it was funny lol.
     Args:
         None
     Return Value:
         None
     */
-    function playKnockingNoise()
+    function play_knocking_noise()
     {
         var knockingNoiseContainer = new Audio("trollKnock.mp3");
         knockingNoiseContainer.play();
