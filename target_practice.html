@@ -148,7 +148,7 @@
     */
     let paused = false;
     let comboCount = 1;
-    let comboDisp = document.getElementById("comboDisplay");
+    let comboDisp = document.getElementById("comboTextBox");
     let enemyDoc = document.getElementById("enemyButton");
 
     function main()
@@ -180,9 +180,17 @@
 
     function place_in_random_location()
     {
+        //place enemy in random x and y location 
         let enemyDoc = document.getElementById("enemyButton");
         enemyDoc.style.marginTop =  Math.random()*60+"vh";
         enemyDoc.style.marginLeft = Math.random()*60+"vw";
+
+
+        //print out the x and y location to the corresponding 
+        //text boxes
+        document.getElementById("xCoordBox").value = enemyDoc.style.marginLeft.substring(0,5);
+        document.getElementById("yCoordBox").value = enemyDoc.style.marginTop.substring(0,5);
+
 
     }
 
