@@ -1,3 +1,13 @@
+<!--
+Angel Quintanilla
+CS 326 - 1002 
+6 October 2022
+Program Description:
+    This program is a html targetting practice that will have the user 
+    "Shoot" a target by clicking on them. The user can accumulate combos
+    as well as change the difficulty of the challenge as the targets 
+    do move 
+-->
 <!DOCTYPE html>
 <html>
 <title >
@@ -5,6 +15,8 @@
 </title>
 
 <style>
+
+    /*CSS Configs for main Target Area*/    
     #TargetBox{
         background-color: rgb(13, 51, 155);
         margin:auto;
@@ -15,6 +27,7 @@
         position: relative;
     }
 
+    /*CSS Configs for top 3 buttons for game interaction*/
     .gameButton{
         border: 4px solid black;
         border-radius: 5%;
@@ -31,6 +44,7 @@
  
     }
     
+    /*Configs for buttons acting as pressed down*/
     .gameButton:active {
         background-color: greenyellow;
         top:10px;
@@ -39,8 +53,7 @@
         
     }
 
-
-
+    /*Configs for target enemy which counts as a button*/
     #enemyButton{
         border-color: transparent;
         background-color: transparent;
@@ -49,6 +62,7 @@
         cursor: pointer;
     }
 
+    /*Configs for general IO elements below the top three*/
     input
     {
         border: 4px solid black;
@@ -61,7 +75,7 @@
 
 </style>
 
-
+<!---->
 <body onload = "main()">
 
 <div style="background-color: tan; height: 100vh; width: 100vw; position: s">
@@ -97,47 +111,34 @@
 
 
     <center>
-    <label>
-        Current x position:
-    </label>
-    <input type = "text" readonly = "readonly" id = "xCoordBox"> 
-    
-    <label>
-        Current y position:
-    </label>
-    <input type="text" readonly = "readonly" id = "yCoordBox">
-    <br>
-
-    <label>Current Speed:</label>
-    <input type="text" readonly = "readonly" id = "currentSpeedBox">
-
-    <label>Current Combo:</label>
-    <input type="text" readonly = "readonly" id = "comboTextBox">
-
-
-
-    <br>
-    <button style = "height: 20x; width: 200px;margin-top: 10px;"> 
-        Submit New Speed 
-    </button>
-
-    <input type = text id = "newSpeedBox">
-
-    
-    <br>
-
-
-    
-
-    
-</center>
-
+        <label>
+            Current x position:
+        </label>
+        <input type = "text" readonly = "readonly" id = "xCoordBox"> 
         
-    
-    
+        <label>
+            Current y position:
+        </label>
+        <input type="text" readonly = "readonly" id = "yCoordBox">
+        <br>
+
+        <label>Current Speed:</label>
+        <input type="text" readonly = "readonly" id = "currentSpeedBox">
+
+        <label>Current Combo:</label>
+        <input type="text" readonly = "readonly" id = "comboTextBox">
 
 
-    
+
+        <br>
+        <button style = "height: 20x; width: 200px;margin-top: 10px;"
+                onclick="change_speed()"> 
+            Submit New Speed 
+        </button>
+
+        <input type = "number" id = "newSpeedBox">
+        <br>
+    </center>
 </div>
 
 
@@ -152,19 +153,17 @@
     let enemyDoc = document.getElementById("enemyButton");
     let currentSpeedBox = document.getElementById("currentSpeedBox")
     let milliSecs = 500;
-
+    let boolHit = false;
 
     function main()
     {
         currentSpeedBox.value = milliSecs;
-        //set default wait time to text box
-    
-            setTimeout(reset_game, milliSecs);
-    
-               
+        setInterval(reset_game, milliSecs);
     }
 
-    
+    /*
+    pause_unpause() - toggles the pause switch
+    */
     function pause_unpause()
     {   
         if(paused == true)
@@ -176,11 +175,20 @@
 
 
 
+    /*
+    register_hit() - accoutns for hit and moves target
+    Args:
+        None
+    Return Value:
+        None
+    */
     function register_hit()
     {
         //continue the game if it was paused
         if(paused == true)
             pause_unpause();
+
+        boolHit = true;
 
         //play the firing sound
         play_fire_sound();
@@ -188,10 +196,16 @@
         //increment combo counter and change location
         comboDisp.value++;        
         place_in_random_location();
-        
-
     }
 
+    /*
+    place_in_random_location () - places enemy in a random location. 
+    Updates applicable "stats" blocks
+    Args: 
+        None
+    Return Value:
+        None
+    */
     function place_in_random_location()
     {
         //place enemy in random x and y location 
@@ -234,20 +248,41 @@
     function reset_game()
     {
         if(paused == true)
-            main();
+            return;
         //reset the combo, set paused to true, and move the target to 
-        //the default location 
-        comboDisp.value = 0;
-        place_in_random_location();
-        document.getElementById("xCoordBox").value = enemyDoc.style.marginLeft.substring(0,5);
-        document.getElementById("yCoordBox").value = enemyDoc.style.marginTop.substring(0,5);
-        paused = true;
+        //the default location
+        if(boolHit == false){ 
+            comboDisp.value = 0;
+            place_in_random_location();
+            document.getElementById("xCoordBox").value = enemyDoc.style.marginLeft.substring(0,5);
+            document.getElementById("yCoordBox").value = enemyDoc.style.marginTop.substring(0,5);
+        }
+        boolHit = false;    
         
-        main();
+    
     }
 
 
-
+    /*
+    change_speed() - changes the speed based on what is in the new value
+        box
+    Args:
+        None
+    Return Value:
+        None
+    */
+    function change_speed()
+    {
+        //get value from the text box. if it's an invalid valeu then 
+        //set value to 500 (the default)
+        milliSecs = document.getElementById("newSpeedBox").value; 
+        if(milliSecs <=0)
+        {
+            alert("Error, Invalid No. Value reset to 500");
+            milliSecs = 500;
+        }
+        currentSpeedBox.value = milliSecs;
+    }
     /*
     play_knocking_noise() - does this as a result of the "horror" button
         I apologize in advance, I thought it was funny lol.
