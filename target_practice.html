@@ -12,7 +12,7 @@
         width: 80vw;
         height: 70vh;
         border-radius: 5%;
-        cursor: pointer;
+        position: relative;
     }
 
     .SetResetButtons{
@@ -39,31 +39,23 @@
         
     }
 
-    .Target{
-        margin: auto;
-        width: 15px;
-        height: 10px;
-        position: relative;
-    
-    }
 
 
     #enemyButton{
         border-color: transparent;
-
         background-color: transparent;
-        margin-top: 50vh;
-        margin-left: 50vw;
-    
+        margin-top: 30vh;
+        margin-left: 38vw;
+        cursor: pointer;
     }
 
 
 </style>
 
 
-<body>
+<body onload = "main()">
 
-<div style="background-color: tan; height: 100vh; width: 100vw;">
+<div style="background-color: tan; height: 100vh; width: 100vw; position: s">
 
     <header>
         <center><p>Shoot the Bat!!!</p></center>
@@ -71,15 +63,15 @@
 
 
 
-    <div id = "TargetBox" onclick="play_fire_sound()">
-            <button id = "enemyButton">
-                <img src="dracky.png" alt = "no dracky today :(" style = "width: 5vw;">
+    <div id = "TargetBox">
+            <button id = "enemyButton" onclick="register_hit()">
+                <img src="dracky.png" alt = "no dracky today :(" style = "width: 15vw;">
             </button>
     </div>
 
     <div>
         <center>
-        <button class="SetResetButtons" onclick="play_fire_sound()">Reset Game!</button>
+        <button class="SetResetButtons" onclick="reset_counter()">Reset Game!</button>
         <button class="SetResetButtons" onclick ="pauseGame()">Pause Game (II) </button>
         <button class="SetResetButtons" onclick = "playKnockingNoise()"> 
             horror mode lol
@@ -87,8 +79,7 @@
 
         <br>
         <br>
-        <input type="text" on>
-
+        <input type="text" id = "comboDisplay">
         </center>
     </div>
     
@@ -100,30 +91,30 @@
     /*
     Global Variables for the game, the pause flag, the combo count, and 
     */
-    var paused = false;
-    var comboCount = 0;
+    let paused = false;
+    let comboCount = 1;
+    let comboDisp = document.getElementById("comboDisplay");
     function main()
     {
-        var playArea = document.getElementById("TargetBox")
-        var startX = playArea.offsetWidth/2 + playArea.offsetLeft;
-        var startY = playArea.offsetHeight/2 + playArea.offsetTop;
+        comboDisp.value = 0;
         
-        while(true)
-        {
+        while(1==1)
+        {   
             playGame(startingPoint);
         }
     }
 
     function playGame(xCoord, yCoord)
     {
-        while(paused != false)
-        {
-            
-        }
+
+
     }
     function pause_unpause()
     {   
-        if(paused == true);
+        if(paused == true)
+            paused = false;
+        else
+            paused = true;
         return;
     }
 
@@ -132,22 +123,38 @@
         return 0;
     }
 
+    function register_hit()
+    {
+        play_fire_sound();
+        
+        comboDisp.value++;        
+        place_in_random_location();
+        
+
+    }
+
+    function place_in_random_location()
+    {
+        document.getElementById("enemyButton").style.marginTop =  Math.random()*60+"vh";
+        document.getElementById("enemyButton").style.marginLeft = Math.random()*60+"vw";
+    }
     function play_fire_sound()
     {
         var shootEffectContainer = new Audio("shootEffect.mp3");
         shootEffectContainer.play();
     }
 
+
     function reset_counter()
     {
-        comboCount = 0;
+        comboDisp.value = 0;
+        main();
         return;
     }
 
     function incrementCounter()
     {
-        comboCount++;
-        return;
+        comboCount = comboCount+1;
     }
 
 
