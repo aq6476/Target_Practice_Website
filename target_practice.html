@@ -86,6 +86,7 @@ Program Description:
 
 
 
+    <!--Print out box for the clicking-->
     <div id = "TargetBox">
             <button id = "enemyButton" onclick="register_hit()">
                 <img src="dracky.png" alt = "no dracky today :(" style = "width: 15vw;">
@@ -110,6 +111,7 @@ Program Description:
 
 
 
+    <!--Print out Stats buttons for coordinates and speed-->
     <center>
         <label>
             Current x position:
@@ -154,11 +156,12 @@ Program Description:
     let currentSpeedBox = document.getElementById("currentSpeedBox")
     let milliSecs = 500;
     let boolHit = false;
+    let clearID; 
 
     function main()
     {
         currentSpeedBox.value = milliSecs;
-        setInterval(reset_game, milliSecs);
+        clearID = setInterval(reset_game, milliSecs);
     }
 
     /*
@@ -282,6 +285,11 @@ Program Description:
             milliSecs = 500;
         }
         currentSpeedBox.value = milliSecs;
+
+        //clear the interval so we can reinitialize
+        clearInterval(clearID);
+        clearID = setInterval(reset_game, milliSecs);
+
     }
     /*
     play_knocking_noise() - does this as a result of the "horror" button
